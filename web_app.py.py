@@ -183,7 +183,8 @@ else:
     # NYTT: Betalningsknapp
     if st.sidebar.button("Fyll på krediter (50 SEK)"):
         # Byt ut 'ditt_pris_id' mot pris-ID från din Stripe-produkt!
-        checkout_url = create_checkout_session('prod_TPQyNc58fAjY5N', st.session_state.user.email) # Exempel ID
+checkout_url = create_checkout_session('price_1SSc6HPQnwEb6uAaEwFcRjVh', st.session_state.user.email)
+
         if checkout_url:
             webbrowser.open(checkout_url)
 
@@ -209,6 +210,7 @@ else:
         st.subheader("Genererat Manus:")
         st.markdown(st.session_state["story"])
         # ... (Bildgenereringslogik är densamma) ...
+
 
 
 
