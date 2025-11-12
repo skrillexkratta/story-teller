@@ -183,11 +183,10 @@ else:
     # NYTT: Betalningsknapp
     if st.sidebar.button("Fyll på krediter (50 SEK)"):
         # Byt ut 'ditt_pris_id' mot pris-ID från din Stripe-produkt!
-checkout_url = create_checkout_session('price_1SSc6HPQnwEb6uAaEwFcRjVh', st.session_state.user.email)
-
+        checkout_url = create_checkout_session('price_1SSc6HPQnwEb6uAaEwFcRjVh', st.session_state.user.email) # Exempel ID
         if checkout_url:
             webbrowser.open(checkout_url)
-
+            
     # ... resten av din Streamlit-kod för generering ...
     with st.sidebar:
         st.header("Inställningar")
@@ -210,6 +209,7 @@ checkout_url = create_checkout_session('price_1SSc6HPQnwEb6uAaEwFcRjVh', st.sess
         st.subheader("Genererat Manus:")
         st.markdown(st.session_state["story"])
         # ... (Bildgenereringslogik är densamma) ...
+
 
 
 
