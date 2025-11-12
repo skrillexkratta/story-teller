@@ -11,11 +11,11 @@ import stripe # NYTT BIBLIOTEK
 
 # --- FÖRBEREDELSER ---
 load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
-supabase_url = os.getenv("SUPABASE_URL")
-supabase_key = os.getenv("SUPABASE_KEY")
-stripe_publishable_key = os.getenv("STRIPE_PUBLISHABLE_KEY")
-stripe_secret_key = os.getenv("STRIPE_SECRET_KEY")
+api_key = st.getenv("OPENAI_API_KEY")
+supabase_url = st.getenv("SUPABASE_URL")
+supabase_key = st.getenv("SUPABASE_KEY")
+stripe_publishable_key = st.getenv("STRIPE_PUBLISHABLE_KEY")
+stripe_secret_key = st.getenv("STRIPE_SECRET_KEY")
 
 if not api_key:
     st.error("FEL: OpenAI API-nyckeln hittades inte. Kontrollera din .env-fil.")
@@ -209,3 +209,4 @@ else:
         st.subheader("Genererat Manus:")
         st.markdown(st.session_state["story"])
         # ... (Bildgenereringslogik är densamma) ...
+
