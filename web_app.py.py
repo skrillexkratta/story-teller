@@ -11,6 +11,8 @@ import stripe # NYTT BIBLIOTEK
 
 # --- FÖRBEREDELSER ---
 load_dotenv()
+
+# Använd st.secrets när vi är online, annars använd os.getenv lokalt
 api_key = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
 supabase_url = st.secrets.get("SUPABASE_URL") or os.getenv("SUPABASE_URL")
 supabase_key = st.secrets.get("SUPABASE_KEY") or os.getenv("SUPABASE_KEY")
@@ -46,7 +48,6 @@ def sign_up(email, password):
         response = client_supabase.auth.sign_up({"email": email, "password": password})
         st.session_state.user = response.user
         st.session_state.signed_in = True
-        # Obs: Supabase skickar ett bekräftelsemail. Användaren måste bekräfta för att kunna logga in.
         return True, "Registrering framgångsrikt! Kontrollera din e-post för att bekräfta."
     except Exception as e:
         return False, f"Registrering misslyckades: {e}"
@@ -58,16 +59,18 @@ def sign_out():
 
 def get_user_credits(user_id):
     try:
-        # Hämtar data från 'users' tabellen där id matchar användarens id
-        response = client_supabase.table("user").select("credits").eq("id", user_id).single().execute()
+        # Försök hämta användaren
+        response = client_supabase.table("users").select("credits").eq("id", user_id).single().execute()
         return response.data['credits']
     except Exception as e:
-        # Om användaren inte finns i users-tabellen, lägg till den med 0 krediter
-        if "Postgrest response error" in str(e): 
-             client_supabase.table("users").insert({"id": user_id, "email": st.session_state.user.email, "credits": 0}).execute()
-             return 0
-        st.error(f"Kunde inte hämta krediter: {e}")
-        return 0
+        # Om användaren inte hittades i tabellen (0 rows), lägg till den
+        if "0 rows" in str(e) or "Postgrest response error" in str(e):
+            st.warning("Ny användare! Skapar konto i databasen med 0 krediter.")
+            client_supabase.table("users").insert({"id": user_id, "email": st.session_state.user.email, "credits": 0}).execute()
+            return 0
+        else:
+            st.error(f"Kunde inte hämta krediter: {e}")
+            return 0
 
 def update_user_credits(user_id, new_credits):
     try:
@@ -82,7 +85,7 @@ def create_checkout_session(price_id, user_email):
             payment_method_types=['card'],
             line_items=[
                 {
-                    'price': price_1SSc6HPQnwEb6uAaEwFcRjVh, # <-- ERSÄTT DENNA TEXT MED DITT STRIPE PRIS-ID
+                    'price': price_id, 
                     'quantity': 1,
                 },
             ],
@@ -182,11 +185,11 @@ else:
     
     # NYTT: Betalningsknapp
     if st.sidebar.button("Fyll på krediter (50 SEK)"):
-        # Byt ut 'ditt_pris_id' mot pris-ID från din Stripe-produkt!
-        checkout_url = create_checkout_session('price_1SSc6HPQnwEb6uAaEwFcRjVh', st.session_state.user.email) # Exempel ID
+        # Se till att ditt pris-ID är inom citattecken!
+        checkout_url = create_checkout_session('price_1SSc6HPQnwEb6uAaEwFcRjVh', st.session_state.user.email) 
         if checkout_url:
             webbrowser.open(checkout_url)
-            
+
     # ... resten av din Streamlit-kod för generering ...
     with st.sidebar:
         st.header("Inställningar")
@@ -200,7 +203,6 @@ else:
 
     if st.button("Generera Manus"):
         with st.spinner("AI skriver manus..."):
-            # Skickar med användar-ID för kreditkontroll
             story_content = generate_story_logic(genre, topic, length, st.session_state.user.id)
             if story_content:
                 st.session_state["story"] = story_content 
@@ -209,9 +211,3 @@ else:
         st.subheader("Genererat Manus:")
         st.markdown(st.session_state["story"])
         # ... (Bildgenereringslogik är densamma) ...
-
-
-
-
-
-
