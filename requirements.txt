@@ -1,5 +1,6 @@
-streamlit
 openai
+streamlit
 Pillow
 requests
 python-dotenv
+# pyarrow behövs inte installeras explicit, Streamlit fixar det
