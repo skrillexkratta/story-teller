@@ -1,0 +1,4 @@
+[build]
+  # Detta tvingar Netlify att använda den installerade Python-versionen korrekt
+  command = "export PYTHON_BIN=$(which python); pip install -r requirements.txt; streamlit run web_app.py"
+  functions = "functions" # Om du använder serverlösa funktioner
