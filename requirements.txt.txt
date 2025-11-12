@@ -1,6 +1,5 @@
 openai
-streamlit
+streamlit==1.28.0
 Pillow
 requests
 python-dotenv
-# pyarrow behövs inte installeras explicit, Streamlit fixar det
