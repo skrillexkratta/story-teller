@@ -1,7 +1,0 @@
-[build]
-  # Byggkommandot: Installera först dependencies, sedan kör Streamlit
-  command = "pip install -r requirements.txt && streamlit run web_app.py"
-  publish = "app/" # Mappen där Streamlit skapar sina filer
-
-[functions]
-  directory = "functions" # Om du har serverlösa funktioner (Steg 5)
