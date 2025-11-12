@@ -1,3 +1,0 @@
-[build]
-  # Vi låter Netlify hantera pip install automatiskt
-  functions = "functions" 
