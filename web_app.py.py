@@ -186,7 +186,7 @@ else:
     # NYTT: Betalningsknapp
     if st.sidebar.button("Fyll på krediter (50 SEK)"):
         # Se till att ditt pris-ID är inom citattecken!
-        checkout_url = create_checkout_session('price_1SSc6HPQnwEb6uAaEwFcRjVh', st.session_state.user.email) 
+        checkout_url = create_checkout_session('price_1SSewnPQnwEb6uAa3kNwKzZU', st.session_state.user.email) 
         if checkout_url:
             webbrowser.open(checkout_url)
 
@@ -211,3 +211,4 @@ else:
         st.subheader("Genererat Manus:")
         st.markdown(st.session_state["story"])
         # ... (Bildgenereringslogik är densamma) ...
+
