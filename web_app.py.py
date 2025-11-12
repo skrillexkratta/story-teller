@@ -82,7 +82,7 @@ def create_checkout_session(price_id, user_email):
             payment_method_types=['card'],
             line_items=[
                 {
-                    'price': price_id, # <-- ERSÄTT DENNA TEXT MED DITT STRIPE PRIS-ID
+                    'price': price_1SSc6HPQnwEb6uAaEwFcRjVh, # <-- ERSÄTT DENNA TEXT MED DITT STRIPE PRIS-ID
                     'quantity': 1,
                 },
             ],
@@ -209,5 +209,6 @@ else:
         st.subheader("Genererat Manus:")
         st.markdown(st.session_state["story"])
         # ... (Bildgenereringslogik är densamma) ...
+
 
 
