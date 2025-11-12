@@ -59,7 +59,7 @@ def sign_out():
 def get_user_credits(user_id):
     try:
         # Hämtar data från 'users' tabellen där id matchar användarens id
-        response = client_supabase.table("users").select("credits").eq("id", user_id).single().execute()
+        response = client_supabase.table("user").select("credits").eq("id", user_id).single().execute()
         return response.data['credits']
     except Exception as e:
         # Om användaren inte finns i users-tabellen, lägg till den med 0 krediter
@@ -209,6 +209,7 @@ else:
         st.subheader("Genererat Manus:")
         st.markdown(st.session_state["story"])
         # ... (Bildgenereringslogik är densamma) ...
+
 
 
 
